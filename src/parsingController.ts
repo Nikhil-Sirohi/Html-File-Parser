@@ -38,13 +38,18 @@ export function parseHTMLFile(filePath: string): ArticleMetadata {
   const paragraphs = document.getElementsByTagName("p");
   let extract = "No extract found";
   for (const p of paragraphs) {
-    if (
-      !p.textContent?.includes("Date:") &&
-      !p.textContent?.includes("Author:")
-    ) {
-      extract = p.textContent?.split(".")[0] + "." || extract;
-      break;
-    }
+    if (!p.textContent) {
+    continue; 
+  }
+
+  if (p.textContent.includes("Date:") || p.textContent.includes("Author:")) {
+    
+    continue;
+  } else {
+    
+    extract = p.textContent.split(".")[0] + "." || extract;
+    break; 
+  }
   }
 
   return { title, date, author, extract };
