@@ -10,14 +10,11 @@ export interface ArticleMetadata {
 }
 
 export function parseHTMLFile(filePath: string): ArticleMetadata {
-  // Read the HTML file
   const htmlContent = fs.readFileSync(filePath, "utf-8");
 
-  // Create a DOM instance
   const dom = new JSDOM(htmlContent);
   const document = dom.window.document;
 
-  // Helper function to find elements containing specific text
   const findElementWithText = (tag: string, text: string): Element | null => {
     const elements = document.getElementsByTagName(tag);
     for (const element of elements) {
@@ -28,7 +25,6 @@ export function parseHTMLFile(filePath: string): ArticleMetadata {
     return null;
   };
 
-  // Extract the required data
   const title =
     document.querySelector("title")?.textContent || "No title found";
 
@@ -39,7 +35,6 @@ export function parseHTMLFile(filePath: string): ArticleMetadata {
   const author =
     authorElement?.nextSibling?.textContent?.trim() || "No author found";
 
-  // Find the first paragraph that doesn’t contain "Date:" or "Author:"
   const paragraphs = document.getElementsByTagName("p");
   let extract = "No extract found";
   for (const p of paragraphs) {
